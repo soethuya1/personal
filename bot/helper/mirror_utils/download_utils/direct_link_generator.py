@@ -185,7 +185,6 @@ def mediafire(url: str) -> str:
 
 def megaup(url: str) -> str:
     """ Megaup direct link generator """
-    sleep(7)
     data = {'Create Download Link'}
     response = requests.post(url, data=data)
     print(response.text)
