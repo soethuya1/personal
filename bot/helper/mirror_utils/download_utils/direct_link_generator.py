@@ -192,7 +192,7 @@ def megaup(url: str) -> str:
     page = BeautifulSoup(
         requests.get(link, allow_redirects=False).content, 'lxml')
     info = page.find('a', {'aria-label': 'Create Download Link'})
-    return info.get('href')
+    return info.get('link')
 
 
 def osdn(url: str) -> str:
