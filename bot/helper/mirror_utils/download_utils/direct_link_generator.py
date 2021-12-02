@@ -185,16 +185,12 @@ def mediafire(url: str) -> str:
 
 def megaup(url: str) -> str:
     """ Megaup direct link generator """
-    try:
-        link = re.findall(r'\bhttps?://.*megaup\.net\S+', url)[0]
-    except IndexError:
-        raise DirectDownloadLinkException("No MediaFire links found\n")
-    page = BeautifulSoup(
-        requests.get(link, allow_redirects=False).content, 'lxml')
-    info = page.find('a', {'aria-label': 'Create Download Link'})
-    return info.get('href')
+    sleep(7)
+    data = {Create Download Link}
+    response = requests.post(url, data=data)
+    print(response.text)
+    return link
     
-
 
 def osdn(url: str) -> str:
     """ OSDN direct link generator """
