@@ -44,8 +44,6 @@ def direct_link_generator(link: str):
         return yandex_disk(link)
     elif 'mediafire.com' in link:
         return mediafire(link)
-    elif 'megaup.net' in link:
-        return megaup(link)
     elif 'uptobox.com' in link:
         return uptobox(link)
     elif 'osdn.net' in link:
@@ -182,14 +180,6 @@ def mediafire(url: str) -> str:
     info = page.find('a', {'aria-label': 'Download file'})
     return info.get('href')
 
-
-def megaup(url: str) -> str:
-    """ Megaup direct link generator """
-    data = {'Create Download Link'}
-    response = requests.post(url, data=data)
-    print(response.text)
-    return link
-    
 
 def osdn(url: str) -> str:
     """ OSDN direct link generator """
