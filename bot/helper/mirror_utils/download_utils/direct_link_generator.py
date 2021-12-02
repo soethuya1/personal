@@ -189,8 +189,9 @@ def megaup(url: str) -> str:
         link = re.findall(r'\bhttps?://.*megaup\.net\S+', url)[0]
     except IndexError:
         raise DirectDownloadLinkException("No MediaFire links found\n")
-    page = BeautifulSoup(requests.get(link).content, 'lxml')
-    info = page.find('a', {'aria-label': 'Download file'})
+    page = BeautifulSoup(
+        requests.get(link, allow_redirects=False).content, 'lxml')
+    info = page.find('a', {'aria-label': 'Create Download Link'})
     return info.get('href')
 
 
