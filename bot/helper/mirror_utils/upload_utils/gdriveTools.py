@@ -374,7 +374,10 @@ class GoogleDriveHelper:
                     LOGGER.info("Deleting cloned data from Drive...")
                     self.deletefile(durl)
                     return "your clone has been stopped and cloned data has been deleted!", "cancelled"
-                msg += f'<b>Name: </b><code>{meta.get("name")}</code>\n\n<b>Size: </b>{get_readable_file_size(self.transferred_size)}'
+                if INDEX_URL is not None:
+                    url_path = requests.utils.quote(f'{meta.get("name")}')
+                    url = f'{INDEX_URL}/{url_path}/'
+                msg += f'📁 𝗙𝗶𝗹𝗲𝗡𝗮𝗺𝗲 : <code>{meta.get("name")}</code>\n\n<b>📀 Size : </b>{get_readable_file_size(self.transferred_size)}\n\n<b>🌎 𝐃𝐫𝐢𝐯𝐞 : </b><code>{durl}</code>\n\n<b>🌠 𝐈𝐧𝐝𝐞𝐱 : </b><code>{url}</code>'
                 msg += '\n\n<b>Type: </b>Folder'
                 msg += f'\n<b>SubFolders: </b>{self.total_folders}'
                 msg += f'\n<b>Files: </b>{self.total_files}'
@@ -388,14 +391,16 @@ class GoogleDriveHelper:
                     buttons.buildbutton("⚡ Index Link", url)
             else:
                 file = self.copyFile(meta.get('id'), parent_id)
-                msg += f'<b>Name: </b><code>{file.get("name")}</code>'
+                msg += f'📁 𝗙𝗶𝗹𝗲𝗡𝗮𝗺𝗲 : <code>{file.get("name")}</code>'
                 durl = self.__G_DRIVE_BASE_DOWNLOAD_URL.format(file.get("id"))
                 buttons = button_build.ButtonMaker()
                 durl = short_url(durl)
                 buttons.buildbutton("☁️ Drive Link", durl)
                 if mime_type is None:
                     mime_type = 'File'
-                msg += f'\n\n<b>Size: </b>{get_readable_file_size(int(meta.get("size", 0)))}'
+                msg += f'\n\n<b>📀 Size : </b>{get_readable_file_size(int(meta.get("size")))}'
+                msg += f'\n\n<b>🌎 𝐃𝐫𝐢𝐯𝐞 : </b><code>{durl}</code>'
+                msg += f'\n\n<b>🌠 𝐈𝐧𝐝𝐞𝐱 : </b><code>{url}</code>'
                 msg += f'\n\n<b>Type: </b>{mime_type}'
                 if INDEX_URL is not None:
                     url_path = requests.utils.quote(f'{file.get("name")}')
@@ -770,13 +775,13 @@ class GoogleDriveHelper:
             mime_type = meta.get('mimeType')
             if mime_type == self.__G_DRIVE_DIR_MIME_TYPE:
                 self.gDrive_directory(meta)
-                msg += f'<b>Name: </b><code>{name}</code>'
-                msg += f'\n\n<b>Size: </b>{get_readable_file_size(self.total_bytes)}'
+                msg += f'📁 𝗙𝗶𝗹𝗲𝗡𝗮𝗺𝗲 : <code>{name}</code>'
+                msg += f'\n\n<b>📀 Size: </b>{get_readable_file_size(self.total_bytes)}'
                 msg += '\n\n<b>Type: </b>Folder'
                 msg += f'\n<b>SubFolders: </b>{self.total_folders}'
                 msg += f'\n<b>Files: </b>{self.total_files}'
             else:
-                msg += f'<b>Name: </b><code>{name}</code>'
+                msg += f'📁 𝗙𝗶𝗹𝗲𝗡𝗮𝗺𝗲 : <code>{name}</code>'
                 if mime_type is None:
                     mime_type = 'File'
                 self.total_files += 1
