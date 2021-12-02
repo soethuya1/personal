@@ -44,6 +44,8 @@ def direct_link_generator(link: str):
         return yandex_disk(link)
     elif 'mediafire.com' in link:
         return mediafire(link)
+    elif 'megaup.net' in link:
+        return megaup(link)
     elif 'uptobox.com' in link:
         return uptobox(link)
     elif 'osdn.net' in link:
@@ -174,6 +176,17 @@ def mediafire(url: str) -> str:
     """ MediaFire direct link generator """
     try:
         link = re.findall(r'\bhttps?://.*mediafire\.com\S+', url)[0]
+    except IndexError:
+        raise DirectDownloadLinkException("No MediaFire links found\n")
+    page = BeautifulSoup(requests.get(link).content, 'lxml')
+    info = page.find('a', {'aria-label': 'Download file'})
+    return info.get('href')
+
+
+def megaup(url: str) -> str:
+    """ Megaup direct link generator """
+    try:
+        link = re.findall(r'\bhttps?://.*megaup\.net\S+', url)[0]
     except IndexError:
         raise DirectDownloadLinkException("No MediaFire links found\n")
     page = BeautifulSoup(requests.get(link).content, 'lxml')
