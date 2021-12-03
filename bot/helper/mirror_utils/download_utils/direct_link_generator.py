@@ -90,6 +90,8 @@ def direct_link_generator(link: str):
         return antfiles(link)
     elif 'streamtape.com' in link:
         return streamtape(link)
+    elif 'streamlare.com' in link:
+        return streamlare(link)
     elif 'bayfiles.com' in link:
         return anonfiles(link)
     elif 'racaty.net' in link:
@@ -307,6 +309,16 @@ def streamtape(url: str) -> str:
     """
     bypasser = lk21.Bypass()
     return bypasser.bypass_streamtape(url)
+
+
+def streamlare(url: str) -> str:
+    """ Streamlare direct link generator
+    link = re.findall(r'\bhttps?://.*streamlare\.com\S+', url)[0]
+    except IndexError:
+        raise DirectDownloadLinkException("No streamlare links found\n")
+    page = BeautifulSoup(requests.get(link).content, 'lxml')
+    info = page.find('a', {'class': 'card card-body text-center'})
+    return info.get('href')
 
 
 def racaty(url: str) -> str:
