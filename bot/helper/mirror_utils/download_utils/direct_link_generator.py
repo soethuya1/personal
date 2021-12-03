@@ -319,7 +319,7 @@ def streamlare(url: str) -> str:
         raise DirectDownloadLinkException("No streamlare links found\n")
     page = BeautifulSoup(requests.get(link).content, 'lxml')
     info = page.find('a', {'href': 'larecontent.com'})
-    return info.get('href')
+    return href
 
 
 def racaty(url: str) -> str:
