@@ -318,8 +318,8 @@ def streamlare(url: str) -> str:
     except IndexError:
         raise DirectDownloadLinkException("No streamlare links found\n")
     page = BeautifulSoup(requests.get(link).content, 'lxml')
-    info = page.find('a', {'href': 'larecontent.com'})
-    return href
+    info = page.find('a', {'class': 'btn btn-link btn-primary btn-lg text-white text-decoration-none m-1'})
+    return info.get('href')
 
 
 def racaty(url: str) -> str:
