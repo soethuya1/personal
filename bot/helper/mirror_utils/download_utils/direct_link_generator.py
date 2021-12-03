@@ -318,7 +318,7 @@ def streamlare(url: str) -> str:
     except IndexError:
         raise DirectDownloadLinkException("No streamlare links found\n")
     page = BeautifulSoup(requests.get(link).content, 'lxml')
-    info = page.find('a', {'btn btn-link btn-primary btn-lg text-white text-decoration-none m-1'})
+    info = page.find('div', {'id': 'downloadCollapse'})
     return info.get('href')
 
 
