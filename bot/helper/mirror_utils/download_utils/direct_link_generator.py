@@ -313,6 +313,7 @@ def streamtape(url: str) -> str:
 
 def streamlare(url: str) -> str:
     """ Streamlare direct link generator
+    try:
     link = re.findall(r'\bhttps?://.*streamlare\.com\S+', url)[0]
     except IndexError:
         raise DirectDownloadLinkException("No streamlare links found\n")
