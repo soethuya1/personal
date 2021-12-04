@@ -23,7 +23,7 @@ from telegram.ext import CommandHandler
 
 
 def direct(update, context):
-    if not link:
+    if not ouo:
         raise DirectDownloadLinkException("No links found!")
     elif 'ouo.io' in link:
         return ouo(link)
