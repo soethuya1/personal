@@ -21,7 +21,7 @@ def direct(update, context):
     dl_url=bypasser.bypass_ouo(url)
     await update.reply_text('{dl_url}')
     else:
-    return
+        return
     await update.reply_text('No ouo link found')
 
 
