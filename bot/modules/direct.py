@@ -16,14 +16,9 @@ from telegram.ext import CommandHandler
 
 def direct(update, context):
     if 'ouo.press' in link
-  try:
     bypasser = lk21.Bypass()
     dl_url=bypasser.bypass_ouo(url)
     await update.reply_text('{dl_url}')
-    else:
-        return
-    await update.reply_text('No ouo link found')
-
 
 
 DIRECT_HANDLER = CommandHandler(BotCommands.DirectCommand, direct, 
