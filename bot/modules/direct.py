@@ -32,7 +32,7 @@ def ouo(url: str) -> str:
     """
     bypasser = lk21.Bypass()
     dirl=bypasser.bypass_anonfiles(url)
-    return Message('{dirl}')
+    return sendMessage('{dirl}')
 
 
 DIRECT_HANDLER = CommandHandler(BotCommands.DirectCommand, direct, 
