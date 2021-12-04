@@ -25,10 +25,10 @@ from telegram.ext import CommandHandler
 def direct(update, context):
     if not ouo:
         raise DirectDownloadLinkException("No links found!")
-    elif 'ouo.io' in link:
-        return ouo(link)
-    elif 'ouo.press' in link:
-        return ouo(link)
+    elif 'ouo.io' in url:
+        return ouo(url)
+    elif 'ouo.press' in url:
+        return ouo(url)
     else:
         raise DirectDownloadLinkException(f'No Direct link function found for {link}')
     
