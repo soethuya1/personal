@@ -31,7 +31,7 @@ def ouo(url: str) -> str:
     Based on https://github.com/zevtyardt/lk21
     """
     bypasser = lk21.Bypass()
-    dirl=bypasser.bypass_anonfiles(url)
+    dirl=bypasser.bypass_ouo(url)
     return sendMessage('{dirl}')
 
 
