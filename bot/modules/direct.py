@@ -6,6 +6,13 @@ import lk21
 import requests
 import cfscrape
 
+from os import popen
+from random import choice
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
+from js2py import EvalJs
+from lk21.extractors.bypasser import Bypass
+from base64 import standard_b64encode
 
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot import dispatcher
