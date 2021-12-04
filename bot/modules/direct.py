@@ -11,12 +11,17 @@ from bot.helper.telegram_helper.filters import CustomFilters
 from bot import dispatcher
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.message_utils import sendMessage, editMessage
-from telegram.ext import CommandHandler
+from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
+from telegram.ext import CommandHandler  
 
-elif 'ouo.press' in link:
+
+def direct(update, context):
+    elif 'ouo.press' in link:
         return ouo(link)
-elif 'ouo.io' in link:
+    elif 'ouo.io' in link:
         return ouo(link)
+    else:
+        raise DirectDownloadLinkException(f'No Direct link function found for {link}')
 
 def ouo(url: str) -> str:
     """ Bypass OuO
@@ -24,10 +29,9 @@ def ouo(url: str) -> str:
     """
     bypasser = lk21.Bypass()
     dl_url=bypasser.bypass_ouo(url)
+    return sendMessage(dl_url)
 
 
-def speedtest(update, context):
-    sendMessage(<code>{dl_url}</code>)
 
 DIRECT_HANDLER = CommandHandler(BotCommands.DirectCommand, direct, 
                                                   filters=CustomFilters.owner_filter | CustomFilters.authorized_user, run_async=True)
