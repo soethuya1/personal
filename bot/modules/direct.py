@@ -15,7 +15,7 @@ from telegram.ext import CommandHandler
 
 
 def direct(update, context):
-    if 'ouo.press' in link
+    if 'ouo.press' in link:
     bypasser = lk21.Bypass()
     dl_url=bypasser.bypass_ouo(url)
     await update.reply_text('{dl_url}')
