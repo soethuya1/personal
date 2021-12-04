@@ -25,6 +25,8 @@ def ouo(url: str) -> str:
     bypasser = lk21.Bypass()
     dl_url=bypasser.bypass_ouo(url)
 
+
+def speedtest(update, context):
     sendMessage(<code>{dl_url}</code>)
 
 DIRECT_HANDLER = CommandHandler(BotCommands.DirectCommand, direct, 
