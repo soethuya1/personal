@@ -121,3 +121,56 @@ class TelegramDownloadHelper(DownloadHelper):
     def cancel_download(self):
         LOGGER.info(f'Cancelling download on user request: {self.gid}')
         self.__is_cancelled = True
+
+#Added Auto Telegram Downloader
+    def add_downloadauto(self, message, path, filename):
+        _message = self._bot.get_messages(message.chat.id, message_ids =message.message_id)
+        media = None
+        media_array = [_message.document, _message.video, _message.audio]
+        for i in media_array:
+            if i is not None:
+                media = i
+                break
+        if media is not None:
+            with global_lock:
+                # For avoiding locking the thread lock for long time unnecessarily
+                download = media.file_id not in GLOBAL_GID
+            if filename == "":
+                name = media.file_name
+                if AUTO_RE_REM :
+                 for i in AUTO_RE_REM.split(','):
+                    if i in name:
+                        name=name.replace(i,'')
+                if AUTO_RE_ADD :        
+                 name =name.replace('.'+name.split('.')[-1],'')+AUTO_RE_ADD+'.'+name.split('.')[-1]
+                path = path + name
+            else:
+                name = filename          
+                if AUTO_RE_REM :
+                 for i in AUTO_RE_REM.split(','):
+                    if i in name:
+                        name=name.replace(i,'')
+                if AUTO_RE_ADD :        
+                 name =name.replace('.'+name.split('.')[-1],'')+AUTO_RE_ADD+'.'+ name.split('.')[-1]
+                path = path + name      
+            if download:
+                if STOP_DUPLICATE:
+                    LOGGER.info(f"Checking File/Folder if already in Drive...")
+                    if self.__listener.isTar:
+                        name = name + ".tar"
+                    if self.__listener.extract:           
+                        smsg = None
+                    else:
+                        gd = GoogleDriveHelper()
+                        smsg, button = gd.drive_list(name)
+                    if smsg:
+                        sendMarkup("File/Folder is already available in Drive.\nHere are the search results:", self.__listener.bot, self.__listener.update, button)
+                        return
+                sendStatusMessage(self.__listener.update, self.__listener.bot)
+                self.__onDownloadStart(name, media.file_size, media.file_id)
+                LOGGER.info(f'Downloading Telegram file with id: {media.file_id}')
+                threading.Thread(target=self.__download, args=(_message, path)).start()
+            else:
+                self.__onDownloadError('File already being downloaded!')
+        else:
+            self.__onDownloadError('No document in the replied message')
