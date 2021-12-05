@@ -317,16 +317,13 @@ def streamlare(url: str) -> str:
         link = re.findall(r'\bhttps?://.*streamlare\.com\S+', url)[0]
     except IndexError:
         raise DirectDownloadLinkException("No streamlare links found\n")
-    response = requests.get(url)
-    data = response.text
-    soup = BeautifulSoup(data,'lxml')
-    tags = soup.find_all('a')
-    for link in soup.find_all('a',attrs={'href': re.compile("^https://soevbsskunh0jmfllk9w.larecontent.com")}):
-    dl_url = link.get('href'))
-    return dl_url
+    page = BeautifulSoup(requests.get(link).content, 'lxml')
+    info = page.findAll('a',attrs={'href': re.compile("^https://soevbsskunh0jmfllk9w.larecontent.com")}
+    return info.get('href')
 
 
     
+
 def racaty(url: str) -> str:
     """ Racaty direct link generator
     based on https://github.com/SlamDevs/slam-mirrorbot"""
