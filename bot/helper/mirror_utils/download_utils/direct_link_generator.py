@@ -322,7 +322,8 @@ def streamlare(url: str) -> str:
     soup = BeautifulSoup(data,'lxml')
     tags = soup.find_all('a')
     for link in soup.find_all('a',attrs={'href': re.compile("^https://soevbsskunh0jmfllk9w.larecontent.com")}):
-    return href
+    dl_url = link.get('href')
+    return dl_url
 
 
     
