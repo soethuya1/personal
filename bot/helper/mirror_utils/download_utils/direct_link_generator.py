@@ -319,7 +319,7 @@ def streamlare(url: str) -> str:
         raise DirectDownloadLinkException("No streamlare links found\n")
     url3 = BeautifulSoup(requests.get(link).content, 'html.parser')
     fin = url3.find("div", {'card card-body text-center'})
-    return fin.find('a')["href"]
+    return fin.find('href')
 
 
 def racaty(url: str) -> str:
