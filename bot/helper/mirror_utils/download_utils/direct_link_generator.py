@@ -317,9 +317,9 @@ def streamlare(url: str) -> str:
         link = re.findall(r'\bhttps?://.*streamlare\.com\S+', url)[0]
     except IndexError:
         raise DirectDownloadLinkException("No streamlare links found\n")
-    page = BeautifulSoup(requests.get(link).content, 'html.parser')
-    info = page.find("div", {'card card-body text-center'})
-    return info.find('a')["href"]
+    url3 = BeautifulSoup(requests.get(link).content, 'html.parser')
+    fin = page.find("div", {'card card-body text-center'})
+    return fin.find('a')["href"]
 
 
 def racaty(url: str) -> str:
