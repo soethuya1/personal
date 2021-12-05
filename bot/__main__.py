@@ -9,6 +9,8 @@ from pyrogram import idle
 from sys import executable
 from telegram import ParseMode, InlineKeyboardMarkup
 from telegram.ext import CommandHandler
+from telegram.ext import MessageHandler
+from telegram.ext.filters import Filters
 
 from wserver import start_server_async
 from bot import bot, app, dispatcher, updater, botStartTime, IGNORE_PENDING_REQUESTS, IS_VPS, PORT, alive, web, nox, OWNER_ID, AUTHORIZED_CHATS, LOGGER, AUTO_TG_DOWN
@@ -20,6 +22,8 @@ from .helper.ext_utils.bot_utils import get_readable_file_size, get_readable_tim
 from .helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper import button_build
 from .modules import authorize, list, cancel_mirror, mirror_status, mirror, clone, watch, shell, eval, delete, speedtest, count, leech_settings, search
+from bot.helper.mirror_utils.download_utils.telegram_downloader import TelegramDownloadHelper
+from bot.helper.ext_utils import fs_utils, bot_utils
 
 
 def stats(update, context):
@@ -74,6 +78,33 @@ Type /{BotCommands.HelpCommand} to get a list of available commands
     else:
         sendMarkup('Not Authorized user', context.bot, update, reply_markup)
 
+def fileshandler(update,context ):
+        print('file')
+        link=''
+        name=''
+        file = None
+        media_array = [update.message.document, update.message.video, update.message.audio]
+        for i in media_array:
+            if i is not None:
+                file = i
+                break
+
+        if not bot_utils.is_url(link) and not bot_utils.is_magnet(link) or len(link) == 0:
+            if file is not None:
+                if file.mime_type != "application/x-bittorrent":
+                    listener = mirror.MirrorListener(bot, update, pswd='', isTar=False, extract=False)
+                    tg_downloader = TelegramDownloadHelper(listener)
+                    ms = update.message
+                    tg_downloader.add_downloadauto(ms, f'{DOWNLOAD_DIR}{listener.uid}/', name)
+                    return
+                else:
+                    if qbit:
+                        file.get_file().download(custom_path=f"/usr/src/app/{file.file_name}")
+                        link = f"/usr/src/app/{file.file_name}"
+                    else:
+                        link = file.get_file().file_path
+
+
 def restart(update, context):
     restart_message = sendMessage("Restarting...", context.bot, update)
     fs_utils.clean_all()
@@ -89,6 +120,8 @@ def restart(update, context):
         f.truncate(0)
         f.write(f"{restart_message.chat.id}\n{restart_message.message_id}\n")
     os.execl(executable, executable, "-m", "bot")
+
+
 
 
 def ping(update, context):
@@ -260,12 +293,15 @@ def main():
     stats_handler = CommandHandler(BotCommands.StatsCommand,
                                    stats, filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
     log_handler = CommandHandler(BotCommands.LogCommand, log, filters=CustomFilters.owner_filter | CustomFilters.sudo_user, run_async=True)
+    files_handler = MessageHandler(Filters.video|Filters.document,fileshandler, run_async=True)
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(ping_handler)
     dispatcher.add_handler(restart_handler)
     dispatcher.add_handler(help_handler)
     dispatcher.add_handler(stats_handler)
     dispatcher.add_handler(log_handler)
+    if AUTO_TG_DOWN :
+     dispatcher.add_handler(files_handler)
     updater.start_polling(drop_pending_updates=IGNORE_PENDING_REQUESTS)
     LOGGER.info("Bot Started!")
     signal.signal(signal.SIGINT, fs_utils.exit_clean_up)
