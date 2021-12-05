@@ -318,7 +318,7 @@ def streamlare(url: str) -> str:
     except IndexError:
         raise DirectDownloadLinkException("No streamlare links found\n")
     url3 = BeautifulSoup(requests.get(link).content, 'html.parser')
-    fin = page.find("div", {'card card-body text-center'})
+    fin = url3.find("div", {'card card-body text-center'})
     return fin.find('a')["href"]
 
 
