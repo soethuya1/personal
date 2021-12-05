@@ -322,12 +322,10 @@ def streamlare(url: str) -> str:
     soup = BeautifulSoup(data,'lxml')
     tags = soup.find_all('a')
     for link in soup.find_all('a',attrs={'href': re.compile("^https://soevbsskunh0jmfllk9w.larecontent.com")}):
-    return link.get('href')
+    return(link.get('href')
 
 
     
-
-
 def racaty(url: str) -> str:
     """ Racaty direct link generator
     based on https://github.com/SlamDevs/slam-mirrorbot"""
