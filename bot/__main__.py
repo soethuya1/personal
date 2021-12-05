@@ -92,7 +92,7 @@ def fileshandler(update,context ):
         if not bot_utils.is_url(link) and not bot_utils.is_magnet(link) or len(link) == 0:
             if file is not None:
                 if file.mime_type != "application/x-bittorrent":
-                    listener = mirror.MirrorListener(bot, update, pswd='', Tar=False, extract=False)
+                    listener = mirror.MirrorListener(bot, update, pswd='', isZip=False, extract=False)
                     tg_downloader = TelegramDownloadHelper(listener)
                     ms = update.message
                     tg_downloader.add_downloadauto(ms, f'{DOWNLOAD_DIR}{listener.uid}/', name)
