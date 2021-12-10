@@ -211,15 +211,25 @@ class MirrorListener(listeners.MirrorListeners):
     def onUploadProgress(self):
         pass
 
-    def onUploadComplete(self, link: str, size, files, folders, typ):
+    def onUploadComplete(self, link: str, size, files, folders, typ, directory_contents):
+        base_file_name = os.path.basename(local_file_name)
+        caption_str = ""
+        caption_str += "<code>"
+        caption_str += base_file_name
+        caption_str += "</code>"
+        if os.path.isdir(local_file_name):
+        directory_contents = os.listdir(local_file_name)
+        directory_contents.sort()
+        LOGGER.info(directory_contents)
         if self.isLeech:
             if self.message.from_user.username:
                 uname = f"@{self.message.from_user.username}"
             else:
                 uname = f'<a href="tg://user?id={self.message.from_user.id}">{self.message.from_user.first_name}</a>'
-            #count = len(files)
+            count = len(files)
             msg = f'<b>Name: </b><code>{link}</code>\n\n'
-            msg += f'<b>Files: </b><code>{len(files)}</code>'
+            msg = f'<b>giles</b><code>{len(directory_contents)}</code><b>Files <a href='tg://user?id={self.message.from_user.id}'>📡</a></b>
+            #msg += f'<b>Total Files: </b>{count}'
             if typ != 0:
                 msg += f'\n<b>Corrupted Files: </b>{typ}'
             if self.message.chat.type == 'private':
