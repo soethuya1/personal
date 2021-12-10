@@ -218,9 +218,9 @@ class MirrorListener(listeners.MirrorListeners):
         caption_str += base_file_name
         caption_str += "</code>"
         if os.path.isdir(local_file_name):
-        directory_contents = os.listdir(local_file_name)
-        directory_contents.sort()
-        LOGGER.info(directory_contents)
+            directory_contents = os.listdir(local_file_name)
+            directory_contents.sort()
+            LOGGER.info(directory_contents)
         if self.isLeech:
             if self.message.from_user.username:
                 uname = f"@{self.message.from_user.username}"
