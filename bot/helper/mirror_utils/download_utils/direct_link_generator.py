@@ -318,13 +318,11 @@ def streamlare(url: str) -> str:
     except IndexError:
         raise DirectDownloadLinkException("No streamlare links found\n")
     page = BeautifulSoup(requests.get(link).content, 'lxml')
-    info = page.find('div', {'id': 'downloadCollapse'})
-    url3 = info.find('a')
-    return url3.get('href')
+    info = page.find('a', attrs={"class": "btn-primary"})
+    return info.get('href') 
 
 
     
-
 def racaty(url: str) -> str:
     """ Racaty direct link generator
     based on https://github.com/SlamDevs/slam-mirrorbot"""
